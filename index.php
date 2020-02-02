@@ -36,11 +36,14 @@
     </div>
     <div class="building_map">
         <?php
-        $trans_array = [680, 630, 580, 530];
+        $trans_array = [480, 430, 431, 481];
+        $i = 0;
+        $trans_dir_array = ['right', 'down', 'up', 'left'];
         for ($x = 1; $x <= 1200; $x++) {
             $building = '';
             if (in_array($x, $trans_array, true)) {
-                $building = 'transport transport-up';
+                $building = 'transport transport-'.$trans_dir_array[$i];
+                $i++;
             }
             echo "<div class='$building' id='building_$x'></div>";
         }
@@ -48,7 +51,7 @@
     </div>
     <div class="transport_map">
         <?php
-        $item_array = [680];
+        $item_array = [480];
         for ($x = 1; $x <= 1200; $x++) {
             $item = '';
             if (in_array($x, $item_array, true)) {
@@ -59,6 +62,7 @@
         ?>
     </div>
     <div class="building_select">
+        <p>stored_items = <span id="str_items">0</span></p>
         <a onclick="build_size = 1; building_type = 'transport'">Transport</a>
         <a onclick="build_size = 2; building_type = 'miner'">Miner</a>
         <a onclick="build_size = 2; building_type = 'storage'">Storage</a>

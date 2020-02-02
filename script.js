@@ -3,6 +3,8 @@ function onLOAD() {
 }
 
 let miner = 0;
+let out_count = 0;
+let stored_items = 0;
 function gameframe() {
     let transport_array = [];
     let item_array = [];
@@ -19,55 +21,82 @@ function gameframe() {
 
     //move items on transport belts
     for (let i = 0; i < transport_array.length; i++) {
-        if (document.getElementsByClassName('building_map')[0].children[(transport_array[i])].classList.contains('transport-up')) {
+        if (document.getElementsByClassName('building_map')[0].children[(transport_array[i])].classList.contains('transport-up') && !document.getElementsByClassName('transport_map')[0].children[(transport_array[i] - 50)].classList.contains('item')) {
             if (item_array.includes(transport_array[i])) {
-                document.getElementsByClassName('transport_map')[0].children[(transport_array[i])].classList.remove('item');
-                document.getElementsByClassName('transport_map')[0].children[(transport_array[i] - 50)].classList.add('item');
+                moveItem(transport_array, i, -50);
             }
-        } else if (document.getElementsByClassName('building_map')[0].children[transport_array[i]].classList.contains('transport-right')) {
+        } else if (document.getElementsByClassName('building_map')[0].children[transport_array[i]].classList.contains('transport-right') && !document.getElementsByClassName('transport_map')[0].children[(transport_array[i] + 1)].classList.contains('item')) {
             if (item_array.includes(transport_array[i])) {
-                document.getElementsByClassName('transport_map')[0].children[transport_array[i]].classList.remove('item');
-                document.getElementsByClassName('transport_map')[0].children[transport_array[i] + 1].classList.add('item');
+                moveItem(transport_array, i, 1);
             }
-        } else if (document.getElementsByClassName('building_map')[0].children[transport_array[i]].classList.contains('transport-down')) {
+        } else if (document.getElementsByClassName('building_map')[0].children[transport_array[i]].classList.contains('transport-down') && !document.getElementsByClassName('transport_map')[0].children[(transport_array[i] + 50)].classList.contains('item')) {
             if (item_array.includes(transport_array[i])) {
-                document.getElementsByClassName('transport_map')[0].children[transport_array[i]].classList.remove('item');
-                document.getElementsByClassName('transport_map')[0].children[transport_array[i] + 50].classList.add('item');
+                moveItem(transport_array, i, 50);
             }
-        } else if (document.getElementsByClassName('building_map')[0].children[transport_array[i]].classList.contains('transport-left')) {
+        } else if (document.getElementsByClassName('building_map')[0].children[transport_array[i]].classList.contains('transport-left') && !document.getElementsByClassName('transport_map')[0].children[(transport_array[i] - 1)].classList.contains('item')) {
             if (item_array.includes(transport_array[i])) {
-                document.getElementsByClassName('transport_map')[0].children[transport_array[i]].classList.remove('item');
-                document.getElementsByClassName('transport_map')[0].children[transport_array[i] - 1].classList.add('item');
+                moveItem(transport_array, i, -1);
             }
             //store items from transport belt
         } else if (document.getElementsByClassName('building_map')[0].children[transport_array[i]].classList.contains('storage')) {
             if (item_array.includes(transport_array[i])) {
                 document.getElementsByClassName('transport_map')[0].children[transport_array[i]].classList.remove('item');
+                document.getElementById('str_items').innerText = stored_items++;
             }
             //miners to transport belt
-        } else if (document.getElementsByClassName('building_map')[0].children[transport_array[i]].classList.contains('miner')) {
-            if (document.getElementsByClassName('building_map')[0].children[(transport_array[i] + 50)].classList.contains('transport')) {
-                //above
-                document.getElementsByClassName('transport_map')[0].children[transport_array[i] + 50].classList.add('item');
-            } else if (document.getElementsByClassName('building_map')[0].children[(transport_array[i] + 1)].classList.contains('transport')) {
-                //right
-                document.getElementsByClassName('transport_map')[0].children[transport_array[i] + 1].classList.add('item');
-            } else if (document.getElementsByClassName('building_map')[0].children[(transport_array[i] - 50)].classList.contains('transport')) {
-                //below
-                document.getElementsByClassName('transport_map')[0].children[transport_array[i] - 50].classList.add('item');
-            } else if (document.getElementsByClassName('building_map')[0].children[(transport_array[i] - 1)].classList.contains('transport')) {
-                //left
-                document.getElementsByClassName('transport_map')[0].children[transport_array[i] - 1].classList.add('item');
+        } else if (document.getElementsByClassName('building_map')[0].children[transport_array[i]].classList.contains('miner_TAG')) {
+            let building_out_arr = [-1, -51, -100, -99, -48, 2, 51, 50];
+            let building_on_ore_arr = [0, -50, -49, 1];
+            let item = null;
+            for (let a = 0; a < building_on_ore_arr.length; a++) {
+                if (document.getElementsByClassName('ore_map')[0].children[(transport_array[i]) + building_on_ore_arr[a]].classList.contains('coal')) {
+                    item = 'coal';
+                } else if (document.getElementsByClassName('ore_map')[0].children[(transport_array[i]) + building_on_ore_arr[a]].classList.contains('iron')) {
+                    item = 'iron';
+                } else if (document.getElementsByClassName('ore_map')[0].children[(transport_array[i]) + building_on_ore_arr[a]].classList.contains('copper')) {
+                    item = 'copper';
+                }
+                if (item) {
+                    if (document.getElementsByClassName('building_map')[0].children[(transport_array[i]) + building_out_arr[out_count]].classList.contains('transport')) {
+                        document.getElementsByClassName('transport_map')[0].children[transport_array[i] + building_out_arr[out_count]].classList.add(item + '_ore');
+                        moveItem(transport_array, i, building_out_arr[out_count]);
+                    }
+                }
             }
+        } else {
+            
         }
     }
+    out_count++;
+    if (out_count >= 8) {
+        out_count = 0;
+    }
 
-    console.log(item_array);
-    console.log(transport_array);
-
- setTimeout(function(){ gameframe(); },500);
+ setTimeout(function(){ gameframe(); },700);
 }
 
+function moveItem(array, number, direction) {
+    let item = null;
+    let transport = null;
+    if (document.getElementsByClassName('building_map')[0].children[(array[number] + direction)].classList.contains('transport-up')) {
+        transport = 'item-animate-up';
+    } else if (document.getElementsByClassName('building_map')[0].children[(array[number] + direction)].classList.contains('transport-right')) {
+        transport = 'item-animate-right';
+    } else if (document.getElementsByClassName('building_map')[0].children[(array[number] + direction)].classList.contains('transport-left')) {
+        transport = 'item-animate-left';
+    } else if (document.getElementsByClassName('building_map')[0].children[(array[number] + direction)].classList.contains('transport-down')) {
+        transport = 'item-animate-down';
+    }
+    if (document.getElementsByClassName('transport_map')[0].children[(array[number])].classList.contains('coal_ore')) {
+        item = 'coal_ore';
+    } else if (document.getElementsByClassName('transport_map')[0].children[(array[number])].classList.contains('iron_ore')) {
+        item = 'iron_ore';
+    } else if (document.getElementsByClassName('transport_map')[0].children[(array[number])].classList.contains('copper_ore')) {
+        item = 'copper_ore';
+    }
+    document.getElementsByClassName('transport_map')[0].children[(array[number])].classList.remove('item', item, 'item-animate-up', 'item-animate-left', 'item-animate-right', 'item-animate-down');
+    document.getElementsByClassName('transport_map')[0].children[(array[number] + direction)].classList.add('item', item, transport);
+}
 
 let build_size = 0;
 let rotation = 'up';

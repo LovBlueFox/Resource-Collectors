@@ -59,28 +59,63 @@ body {
 .copper {
     background: rgb(186, 123, 82) !important
 }
+.coal_ore:after {
+    background: rgb(43, 43, 43) !important
+}
+.iron_ore:after {
+    background: rgb(142, 184, 186) !important
+}
+.copper_ore:after {
+    background: rgb(186, 123, 82) !important
+}
+
 .transport:after {
     color: #ffa400;
     background: #5d5d5d;
-    width: 34px;
-    height: 34px;
     display: block;
-    font-size: 22px;
     overflow: hidden;
     text-align: center;
-    line-height: 34px;
+    border-color: #fffb00 !important;
 }
 .transport-up:after {
     content: '⯅';
+    border-left: 1px solid;
+    border-right: 1px solid;
+    margin-left: 5px;
+    line-height: 37px;
+    width: 20px;
+    height: 34px;
+    padding-top: 5px;
+    margin-top: -6px;
 }
 .transport-right:after {
     content: '⯈';
+    border-top: 1px solid;
+    border-bottom: 1px solid;
+    margin-top: 5px;
+    width: 34px;
+    height: 20px;
+    padding-right: 5px;
 }
 .transport-down:after {
     content: '⯆';
+    border-left: 1px solid;
+    border-right: 1px solid;
+    margin-left: 5px;
+    line-height: 37px;
+    width: 20px;
+    height: 34px;
+    padding-bottom: 5px;
 }
 .transport-left:after {
     content: '⯇';
+    border-top: 1px solid;
+    border-bottom: 1px solid;
+    margin-top: 5px;
+    width: 34px;
+    height: 20px;
+    padding-left: 5px;
+    margin-left: -6px;
 }
 
 .direction-up:after {
@@ -113,4 +148,48 @@ body {
 .item_coal:after {
     Content: 'C';
     background: #000000;
+}
+
+.item-animate-up:after {
+    animation-name: item-animate-up;
+    animation-duration: 700ms;
+    transition: all linear;
+    animation-timing-function: linear;
+}
+@keyframes item-animate-up {
+    from {margin-top: 11px;}
+    to {margin-top: -22px;}
+}
+
+.item-animate-right:after {
+     animation-name: item-animate-right;
+     animation-duration: 700ms;
+     transition: all linear;
+     animation-timing-function: linear;
+ }
+@keyframes item-animate-right {
+    from {margin-left: 11px;}
+    to {margin-left: 44px;}
+}
+
+.item-animate-down:after {
+    animation-name: item-animate-down;
+    animation-duration: 700ms;
+    transition: all linear;
+    animation-timing-function: linear;
+}
+@keyframes item-animate-down {
+    from {margin-top: 11px;}
+    to {margin-top: 44px;}
+}
+
+.item-animate-left:after {
+    animation-name: item-animate-left;
+    animation-duration: 700ms;
+    transition: all linear;
+    animation-timing-function: linear;
+}
+@keyframes item-animate-left {
+    from {margin-left: 11px;}
+    to {margin-left: -22px;}
 }
