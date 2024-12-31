@@ -47,7 +47,7 @@
       for (let x = 1; x <= 1200; x++) {
           let building = '';
           if (transport_array.includes(x)) {
-              building = `transport transport-${trans_dir_array[$i]}`;
+              building = `transport transport-${transport_dir_array[$i]}`;
               i++;
           }
           document.getElementById('building_map').innerHTML += `<div class='${building}' id='building_${x}'></div>`;
