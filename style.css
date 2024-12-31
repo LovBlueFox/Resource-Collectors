@@ -2,6 +2,18 @@ body {
     background: black;
     color: white;
 }
+a {
+    background: #333;
+  padding: 5px 10px;
+  border: 1px solid white;
+  border-radius: 5px;
+  margin: 10px;
+  cursor: pointer;
+}
+
+a:hover {
+    background: #444;
+}
 .building_select {
     position:absolute;
     bottom: 1px;
